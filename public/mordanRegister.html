@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste Management - Register</title>
+    <style>
+        body {
+            font-family: "Poppins", sans-serif;
+            background: linear-gradient(135deg, #0f9b0f, #48c6ef);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .register-container {
+            width: 400px;
+            padding: 40px;
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .register-container h2 {
+            text-align: center;
+            color: #0f9b0f;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        .register-container .icon {
+            text-align: center;
+            font-size: 40px;
+            color: #0f9b0f;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #0f9b0f;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #333;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 38px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #555;
+        }
+
+        #register-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            background: #0f9b0f;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        #register-btn:hover {
+            background: #0c7a0c;
+        }
+
+        .extra-links {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .extra-links a {
+            color: #0f9b0f;
+            text-decoration: none;
+        }
+
+        .extra-links a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #d9534f;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="register-container">
+        <div class="icon">♻️</div>
+        <h2>Register Account</h2>
+        <form id="register-form">
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
+                <span class="toggle-password" onclick="togglePassword('password', this)">👁️</span>
+            </div>
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" required>
+                <span class="toggle-password" onclick="togglePassword('confirm-password', this)">👁️</span>
+            </div>
+            <p class="error" id="error-msg"></p>
+            <button type="submit" id="register-btn">Register</button>
+            <div class="extra-links">
+                <p>Already have an account? <a href="#">Login here</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function togglePassword(id, el) {
+            const input = document.getElementById(id);
+            if (input.type === "password") {
+                input.type = "text";
+                el.textContent = "🙈";
+            } else {
+                input.type = "password";
+                el.textContent = "👁️";
+            }
+        }
+
+        const form = document.getElementById("register-form");
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirm-password");
+        const errorMsg = document.getElementById("error-msg");
+        const fullname = document.getElementById("fullname");
+        const email = document.getElementById("email");
+        const username = document.getElementById("username");
+        const register_btn = document.getElementById("register-btn");
+
+        function reset() {
+            fullname.value = "",
+                email.value = "",
+                username.value = "",
+                password.value = ""
+        }
+
+
+        let result
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            if (password.value !== confirmPassword.value) {
+                errorMsg.textContent = "❌ Passwords do not match!";
+                return;
+            }
+
+
+            const sendData =
+            {
+                fullname: fullname.value,
+                email: email.value,
+                username: username.value,
+                password: password.value
+
+            }
+            const extractEmailForOtp = sendData.email
+
+            try {
+                const response = await fetch("http://localhost:3000/user/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(sendData)
+                })
+                result = await response.json();
+
+                if (result.message === "Email already exists") {
+                    email.value = "Email already exists"
+                    email.style.borderColor = "red"
+
+
+                } else if (result.message === "Username already exists") {
+                    username.value = "Username already exists"
+                    username.style.borderColor = "red"
+
+
+                } else if (response.ok) {
+                    window.alert("✅ OTP sent to your email");
+
+                    //*****************send_otp**********************
+                    try {
+                        const sendOTP = await fetch('http://localhost:3000/user/verifyEmail', {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({
+                                email: sendData.email
+                            })
+
+                        })
+                        const otpResult = await sendOTP.json();
+                        console.log("OTP Response:", otpResult);
+
+
+                        window.location.href = "otpVerify.html"
+                        reset()
+
+
+                    } catch (error) {
+                        console.log("Error to register")
+                    }
+
+                    // **************
+
+
+                    //************************$**************************
+
+
+
+                } else {
+                    window.alert(result.message || "❌ Registration failed!");
+                }
+
+            }
+            catch (error) {
+
+                console.log(error);
+                console.log(error, "Registration Failed");
+
+            }
+
+        })
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>

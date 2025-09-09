@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Verification</title>
+  <style>
+    /* ===== Reset & Fonts ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #43cea2, #185a9d);
+    }
+
+    .otp-container {
+      background: #fff;
+      padding: 2rem 2.5rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 350px;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    .otp-container h2 {
+      margin-bottom: 0.5rem;
+      font-size: 1.5rem;
+      color: #2e7d32;
+    }
+
+    .otp-container p {
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    /* ===== OTP Input ===== */
+    .otp-inputs {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+
+    .otp-inputs input {
+      width: 45px;
+      height: 55px;
+      border: 2px solid #c8e6c9;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 1.2rem;
+      transition: 0.3s;
+    }
+
+    .otp-inputs input:focus {
+      border-color: #43cea2;
+      box-shadow: 0 0 8px rgba(67, 206, 162, 0.4);
+      outline: none;
+      transform: scale(1.05);
+    }
+
+    /* ===== Verify Button ===== */
+    .btn {
+      background: linear-gradient(135deg, #43cea2, #2e7d32);
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    /* ===== Animation ===== */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="otp-container">
+    <h2>OTP Verification</h2>
+    <p>Enter the 4-digit code we sent to your email</p>
+
+    <div class="otp-inputs">
+      <input type="text" id="one" maxlength="1" />
+      <input type="text" id="two" maxlength="1" />
+      <input type="text" id="three" maxlength="1" />
+      <input type="text" id="four" maxlength="1" />
+
+    </div>
+
+    <button class="btn" id="btn" onclick="verifyOtp()">Verify OTP</button>
+  </div>
+
+  <script>
+    // Auto-focus next input
+    const inputs = document.querySelectorAll(".otp-inputs input");
+
+    inputs.forEach((input, index) => {
+      input.addEventListener("keyup", (e) => {
+        if (e.key >= 0 && e.key <= 9) {
+          if (index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          }
+        } else if (e.key === "Backspace" && index > 0) {
+          inputs[index - 1].focus();
+        }
+      });
+    });
+
+
+    let otp
+    function verifyOtp() {
+      otp = "";
+      inputs.forEach((input) => {
+        otp += input.value;
+      });
+
+      if (otp.length === 4) {
+        // alert("Your OTP is: " + otp);
+
+      } else {
+        alert("Please enter complete 4-digit OTP.");
+      }
+    }
+
+
+
+    btn.addEventListener('click', () => {
+      const addAll = ({otp:otp})
+      console.log(otp);
+
+      try {
+        const validateOtp = fetch('http://localhost:3000/user/otp', {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(addAll)
+        })
+        validateResult = validateOtp.json()
+        alert(validateOtp.message)
+        
+        
+      } catch (error) {
+
+      }
+    })
+
+
+
+
+
+
+
+  </script>
+
+</body>
+
+</html>
