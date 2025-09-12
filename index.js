@@ -1,12 +1,8 @@
-import express from 'express'
-import cors from 'cors'
+import {app} from './app.js'
 import { dbConnect } from './Database/mongoConnect.js'
 
-const app = express()
 
-app.use(cors())
-app.use(express.json())
-app.use(express.static("public"));
+
 
 
 const port = 3000;
@@ -24,9 +20,9 @@ dbConnect()
 
 
 
+const ip = "0.0.0.0"
 
-
-app.listen(port, () => {
-    console.log("Server Listen On http://localhost:3000");
+app.listen(port,ip, () => {
+    console.log("Server Listen On http://ip:3000");
 })
 

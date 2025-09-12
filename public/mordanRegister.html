@@ -15,7 +15,9 @@
             height: 100vh;
             margin: 0;
         }
-
+        #image{
+            height: 200px;
+        }
         .register-container {
             width: 400px;
             padding: 40px;
@@ -116,7 +118,7 @@
 
 <body>
     <div class="register-container">
-        <div class="icon">♻️</div>
+        <div class="icon"><img id="image" src="img.png"></div>
         <h2>Register Account</h2>
         <form id="register-form">
             <div class="form-group">
@@ -196,7 +198,7 @@
                 password: password.value
 
             }
-            const extractEmailForOtp = sendData.email
+            // const extractEmailForOtp = sendData.email
 
             try {
                 const response = await fetch("http://localhost:3000/user/register", {
@@ -208,6 +210,7 @@
                 })
                 result = await response.json();
 
+
                 if (result.message === "Email already exists") {
                     email.value = "Email already exists"
                     email.style.borderColor = "red"
@@ -218,32 +221,28 @@
                     username.style.borderColor = "red"
 
 
-                } else if (response.ok) {
+                } else if (result.message=='ok') {
                     window.alert("✅ OTP sent to your email");
-
+                    window.location.href = "otpVerify.html"
+                    reset()
+                    
                     //*****************send_otp**********************
-                    try {
-                        const sendOTP = await fetch('http://localhost:3000/user/verifyEmail', {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                email: sendData.email
-                            })
+                    // try {
+                    //     const sendOTP = await fetch('http://localhost:3000/user/verifyotp', {
+                    //         method: "POST",
+                    //         headers: {
+                    //             "Content-Type": "application/json"
+                    //         },
+                    //         body: JSON.stringify({
+                    //             email: sendData.email
+                    //         })
 
-                        })
-                        const otpResult = await sendOTP.json();
-                        console.log("OTP Response:", otpResult);
-
-
-                        window.location.href = "otpVerify.html"
-                        reset()
-
-
-                    } catch (error) {
-                        console.log("Error to register")
-                    }
+                    //     })
+                    //     const otpResult = await sendOTP.json();
+                    //     console.log("OTP Response:", otpResult);
+                    // } catch (error) {
+                    //     console.log("Error to register")
+                    // }
 
                     // **************
 
