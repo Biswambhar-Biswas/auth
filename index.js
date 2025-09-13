@@ -20,9 +20,9 @@ dbConnect()
 
 
 
-const ip = "0.0.0.0"
 
-app.listen(port,ip, () => {
-    console.log("Server Listen On http://ip:3000");
+
+app.listen(port, () => {
+    console.log("Server Listen On http://localhost:3000");
 })
 
