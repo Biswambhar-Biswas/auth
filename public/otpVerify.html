@@ -158,7 +158,7 @@
       console.log(otp);
 
       try {
-        const validateOtp = fetch('http://localhost:3000/user/verifyotp', {
+        const validateOtp = fetch('http://192.168.29.102:3000/user/verifyotp', {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -166,9 +166,12 @@
           body: JSON.stringify(addAll)
         })
         validateResult = validateOtp.json()
+console.log(validateOtp);z
 
-        if (validateOtp.Registered==true) {
+        if (validateOtp.registered==true) {
+          window.location.href = "login.html"
         return  alert("Register Sucessfully")
+        
         }
         if (validateOtp.message=="wrong OTP") {
           inputs.style.color = 'red'

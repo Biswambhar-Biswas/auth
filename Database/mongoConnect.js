@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
+import dotenv from 'dotenv'
+dotenv.config()
 
 const dbConnect = async()=>{
     try{
-        const mongoconnect =await mongoose.connect('mongodb://localhost:27017/register')
+        const mongoconnect =await mongoose.connect(`${process.env.MONGODB_URI}`);
         // console.log(mongoconnect.connection.host);
         console.log('Connection Ducessfull with DB');
         

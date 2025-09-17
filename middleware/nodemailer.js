@@ -1,19 +1,21 @@
 import nodemailer from 'nodemailer'
+import dotenv from 'dotenv'
+dotenv.config()
 
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
   auth: {
-    user: "biswasbony89677@gmail.com",
-    pass: "bzvdbefqyglpagfd",
+    user: `${process.env.NODE_MAILER_EMAIL}`,
+    pass: `${process.env.NODE_MAILER_EMAIL_PASSWORD}`,
   },
 });
 
 const sendMail = async (to, otp) => {
   try {
     const info = await transporter.sendMail({
-      from: `"BISWAMBHAR.DEV" <biswasbony89677@gmail.com>`,
+      from: `"BISWAMBHAR.DEV" <${process.env.NODE_MAILER_EMAIL}>`,
       to: to,
       subject: `Verify Your Account`,
       text:`your otp is ${otp}`, // plain‑text body

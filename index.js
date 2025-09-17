@@ -1,5 +1,7 @@
 import {app} from './app.js'
 import { dbConnect } from './Database/mongoConnect.js'
+import dotenv from 'dotenv'
+dotenv.config()
 
 
 
@@ -22,7 +24,7 @@ dbConnect()
 
 
 
-app.listen(port, () => {
+app.listen(port,'192.168.29.102', () => {
     console.log("Server Listen On http://localhost:3000");
 })
 

@@ -212,7 +212,7 @@
       <a href="#" class="forgot">Forgot password?</a>
       <button type="submit" id="btn" class="btn">Get Started</button>
 
-      <div class="divider"><a href="#" id="register">Don't have a account</a></div>
+      <div class="divider"><a href="mordanRegister.html" id="register">Don't have a account</a></div>
 
       <div class="socials">
         <button type="button"><i class="fa-brands fa-google"></i> Google</button>
@@ -250,7 +250,7 @@
       }
 
       try {
-        const response = await fetch('http://localhost:3000/user/login', {
+        const response = await fetch('http://192.168.29.102:3000/user/login', {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

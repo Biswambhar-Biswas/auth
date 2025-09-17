@@ -69,7 +69,7 @@ const registerUser = (async (req, res) => {
     sendMail(email, otp)
 
 
-    res.json({ message: "ok" })
+     res.json({ message: "ok" })
 
 
 }
@@ -117,7 +117,7 @@ const verifyotp = (async (req, res) => {
             
             storeOtp = { otp: "", userData: {} }
 
-            return res.status(200).json({ Registered: true });
+            return res.status(200).json({ registered: true });
 
 
 
