@@ -1,11 +1,8 @@
 import path from "path";
-import { fileURLToPath } from "url";
+import {__dirname} from '../utils/path.js'
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const serveRegistration = (req, res) => {
+const otpVerify = (req, res) => {
   res.sendFile(path.join(__dirname, "../public/otpVerify.html"));
 };
 
-export { serveRegistration };
+export { otpVerify };

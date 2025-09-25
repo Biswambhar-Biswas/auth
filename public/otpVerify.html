@@ -153,41 +153,34 @@
 
 
 
-    btn.addEventListener('click', () => {
-      const addAll = ({otp:otp})
-      console.log(otp);
+    btn.addEventListener('click', async () => {
+      const addAll = ({ otp: otp })
+      // console.log(otp);
 
       try {
-        const validateOtp = fetch('http://192.168.29.102:3000/user/verifyotp', {
+        const response = await fetch('http://192.168.29.102:3000/user/verifyotp', {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
           body: JSON.stringify(addAll)
         })
-        validateResult = validateOtp.json()
-console.log(validateOtp);z
+        result = await response.json()
+        console.log(result);
 
-        if (validateOtp.registered==true) {
-          window.location.href = "login.html"
-        return  alert("Register Sucessfully")
-        
+        if (result.registered == true) {
+          window.location.href = result.redirect
         }
-        if (validateOtp.message=="wrong OTP") {
+        if (result.message == "wrong OTP") {
+          alert("Wrong OTP")
           inputs.style.color = 'red'
-        return  alert("Wrong OTP")
         }
 
-        
-        
       } catch (error) {
+        console.log(error);
 
       }
     })
-
-
-
-
 
 
 
