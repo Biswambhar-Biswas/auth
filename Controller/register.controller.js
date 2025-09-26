@@ -31,9 +31,8 @@ const registerUser = (async (req, res) => {
 
         const { username, email, fullName, password } = req.body
 
-
-
-
+        // console.log(fullName,email);
+        
 
         // Check email
 
@@ -113,7 +112,6 @@ const verifyotp = (async (req, res) => {
 
             //database a save korlam
             const result = await userModel.create({fullName, username, email, password });
-
             console.log(result);
             
 
@@ -131,7 +129,7 @@ const verifyotp = (async (req, res) => {
                 maxAge: 3600000
             })
             .status(200)
-            .json({ registered: true, redirect: '/user/dashboard' })
+            .json({ registered: true, redirect: '/user' })
 
 
 

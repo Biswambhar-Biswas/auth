@@ -24,7 +24,7 @@ dbConnect()
 
 
 
-app.listen(port,'192.168.29.102', () => {
+app.listen(port,'localhost', () => {
     console.log("Server Listen On http://localhost:3000");
 })
 

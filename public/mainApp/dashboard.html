@@ -804,7 +804,7 @@
       const logoutBtn = document.getElementById('logoutBtn')
       logoutBtn.addEventListener('click', async function () {
         logoutBtn.innerHTML = 'leoleo'
-        const response = await fetch('http://192.168.29.102:3000/user/logout')
+        const response = await fetch('http://localhost:3000/user/logout')
         const result = await response.json()
         return window.location.href = result.redirect
       });
@@ -830,7 +830,7 @@
     // const memberScence = document.getElementById('memberScence')
     //anmar kaj ai khan theke suru
     //fetch all user data
-    fetch('http://192.168.29.102:3000/user/userData')
+    fetch('http://localhost:3000/user/userData')
       .then((res) => {
         return res.json()
       })
@@ -838,7 +838,7 @@
         // console.log(data);
 
         userName.innerHTML = data.username
-        profileUserName.innerText = data.username
+        profileUserName.innerText = data.fullName
         email.innerText = data.email
        })
       .catch((err) => {
@@ -873,7 +873,7 @@
       phone.value = ""
       // console.log(bookingData);
       try {
-        const response = await fetch("http://192.168.29.102:3000/user/dashboard", {
+        const response = await fetch("http://localhost:3000/user/dashboard", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

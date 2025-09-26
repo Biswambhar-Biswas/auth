@@ -193,7 +193,7 @@
 
             const sendData =
             {
-                fullname: fullname.value,
+                fullName: fullname.value,
                 email: email.value,
                 username: username.value,
                 password: password.value
@@ -202,7 +202,7 @@
             // const extractEmailForOtp = sendData.email
 
             try {
-                const response = await fetch("http://192.168.29.102:3000/user/register", {
+                const response = await fetch("http://localhost:3000/user/register", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

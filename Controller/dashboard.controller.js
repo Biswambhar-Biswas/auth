@@ -41,7 +41,8 @@ const userData = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    res.json({ username: user.username ,email:user.email});
+        
+    res.json({ username: user.username ,email:user.email,fullName:user.fullName,memberSince:user.createdAt});
 
   } catch (error) {
     console.log("error to send user data", error);
