@@ -685,7 +685,7 @@
                 </div>
                 <div class="row">
                   <div class="tag">Member Since</div>
-                  <div>Jan 2023</div>
+                  <div id="memberSince">Jan 2023</div>
                 </div>
               </div>
             </div>
@@ -822,12 +822,12 @@
       });
     });
 
-
+//******************fetching all fucking user's data*********************
     const userName = document.getElementById('userName')
     const profileUserName = document.getElementById('profileUserName')
     const email = document.getElementById('email')
     // const address = document.getElementById('address')
-    // const memberScence = document.getElementById('memberScence')
+    const memberSince = document.getElementById('memberSince')
     //anmar kaj ai khan theke suru
     //fetch all user data
     fetch('http://localhost:3000/user/userData')
@@ -836,7 +836,9 @@
       })
       .then((data) => {
         // console.log(data);
-
+        // const arrayForCreatedDate = data.memberSince.split('')
+        // console.log(arrayForCreatedDate);
+        
         userName.innerHTML = data.username
         profileUserName.innerText = data.fullName
         email.innerText = data.email
