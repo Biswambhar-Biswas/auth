@@ -20,6 +20,13 @@ const userSchema = new mongoose.Schema({
     fullName: {
         type: String,
     },
+    coin:{
+        type:String,
+        default:0
+    },
+    orderHistory:[
+        
+    ]
 
 }, { timestamps: true }
 )

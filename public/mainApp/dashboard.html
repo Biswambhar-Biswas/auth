@@ -566,6 +566,16 @@
         </div>
         <div class="grow"></div>
         <span id="userName" class="chip"></span>
+
+
+        <!-- coin -->
+        <div id="coinField" class="chip" style="display: flex; align-items: center; gap: 6px;">
+          <i class="fas fa-coins" style="color: gold;"></i>
+          <span id="coinBalance">###</span>
+        </div>
+
+
+
         <button id="logoutBtn" class="btn outline">Logout</button>
       </div>
     </header>
@@ -598,18 +608,18 @@
             <button data-view="collection">
               <span><i class="fas fa-trash"></i> Collection</span>
             </button>
-            <button data-view="monitoring">
+            <!-- <button data-view="monitoring">
               <span><i class="fas fa-chart-line"></i> Monitoring</span>
-            </button>
-            <button data-view="facilities">
+            </button> -->
+            <!-- <button data-view="facilities">
               <span><i class="fas fa-map-marker"></i> Facilities</span>
-            </button>
+            </button> -->
             <button data-view="training">
               <span><i class="fas fa-graduation-cap"></i> Training</span>
             </button>
-            <button data-view="admin">
+            <!-- <button data-view="admin">
               <span><i class="fas fa-cog"></i> Admin</span>
-            </button>
+            </button> -->
           </div>
         </div>
       </aside>
@@ -822,10 +832,11 @@
       });
     });
 
-//******************fetching all fucking user's data*********************
+    //******************fetching all fucking user's data*********************
     const userName = document.getElementById('userName')
     const profileUserName = document.getElementById('profileUserName')
     const email = document.getElementById('email')
+    const coinBalance = document.getElementById('coinBalance')
     // const address = document.getElementById('address')
     const memberSince = document.getElementById('memberSince')
     //anmar kaj ai khan theke suru
@@ -838,11 +849,12 @@
         // console.log(data);
         // const arrayForCreatedDate = data.memberSince.split('')
         // console.log(arrayForCreatedDate);
-        
+
         userName.innerHTML = data.username
         profileUserName.innerText = data.fullName
         email.innerText = data.email
-       })
+        coinBalance.innerHTML = data.coin
+      })
       .catch((err) => {
         console.log('error to fetch user detiles' + err);
       })
@@ -852,7 +864,7 @@
     //  .catch((error)=>{'error to get data in dashboard_serve_BE'+ error})
 
 
-    //***********************booking*******************************
+    //***********************     booking     *******************************
 
 
     const submit_booking = document.getElementById('submit_booking')
