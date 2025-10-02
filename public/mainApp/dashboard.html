@@ -628,7 +628,7 @@
         <!-- Overview Panel (others would be similar) -->
         <section id="view-home" class="panel">
           <h2>Overview</h2>
-          <p class="muted">Personalized dashboard with quick KPIs</p>
+          <!-- <p class="muted">Personalized dashboard with quick KPIs</p> -->
           <div class="kpi">
             <div class="card">
               <div class="label">Upcoming Pickups</div>
@@ -868,6 +868,30 @@
 
 
     const submit_booking = document.getElementById('submit_booking')
+
+    const autoLocationFetch = document.getElementById('location')
+
+ autoLocationFetch.addEventListener('click', () => {
+
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords
+            autoLocationFetch.value = `${latitude},${longitude}`
+          },
+          (error) => {
+            console.error("Geolocation error:", error.message);
+          },
+          {
+            enableHighAccuracy: true,
+            // timeout: 5000,
+            maximumAge: 0
+          }
+        )
+      }
+    })
+
+
     submit_booking.addEventListener('click', async (e) => {
       e.preventDefault()
       const location = document.getElementById('location')

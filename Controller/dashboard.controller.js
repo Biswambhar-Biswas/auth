@@ -20,7 +20,7 @@ const dashboard = (async (req, res) => {
             }
             //recive user booking data
             const { location, dateAndTime, waste_category, phone } = req.body
-            console.log(location, dateAndTime);
+            console.log(location, dateAndTime,waste_category,phone);
         })
 
     } catch (error) {
