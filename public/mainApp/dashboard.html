@@ -871,7 +871,7 @@
 
     const autoLocationFetch = document.getElementById('location')
 
- autoLocationFetch.addEventListener('click', () => {
+    autoLocationFetch.addEventListener('click', () => {
 
       if (navigator.geolocation) {
         navigator.geolocation.watchPosition(
@@ -898,7 +898,8 @@
       const dateAndTime = document.getElementById('date_time')
       const waste_category = document.getElementById('waste_category')
       const phone = document.getElementById('phone')
-
+      // const soundEffect = new Audio('../mainApp/dump.mp3')
+      // soundEffect.play()
       const bookingData = {
         location: location.value,
         dateAndTime: dateAndTime.value,
@@ -909,8 +910,15 @@
       dateAndTime.value = ""
       waste_category.value = ""
       phone.value = ""
+
+
       // console.log(bookingData);
-      try {
+      // if (location.value == "" || dateAndTime.value == "" || waste_category.value == "" || phone.value == "") {
+      //   return alert('All Fields are required')
+
+      // }
+      //else
+       try {
         const response = await fetch("http://localhost:3000/user/dashboard", {
           method: "POST",
           headers: {
@@ -918,7 +926,12 @@
           },
           body: JSON.stringify(bookingData)
         })
+        // submit_booking.innerHTML = "Booked"
+        // submit_booking.style.backgroundColor = "#5CFF5C"
+        // alert("Request Booked For Peekup ♻️")
         result = await response.json();
+        console.log(result);
+        
 
       } catch (error) {
         console.log("error to send booking data" + error);

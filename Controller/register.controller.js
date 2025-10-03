@@ -1,6 +1,8 @@
 import { __dirname } from '../utils/path.js'
 import jwt from 'jsonwebtoken'
 import cookieParser from 'cookie-parser'
+import { RequestHistory } from '../Database/request.models.js'
+
 import { userModel } from '../Database/user.models.js'
 import { encriptPass } from '../middleware/bcrypt.js'
 import { sendMail } from '../middleware/nodemailer.js'
@@ -112,6 +114,7 @@ const verifyotp = (async (req, res) => {
 
             //database a save korlam
             const result = await userModel.create({fullName, username, email, password });
+            const requestPeekup = await RequestHistory.create({email});
             console.log(result);
             
 

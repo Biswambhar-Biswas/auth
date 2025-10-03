@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Orders</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #1e1e1e;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.5);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    .form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    input {
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      flex: 1;
+    }
+    button {
+      padding: 10px 15px;
+      background: #4e9cff;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #357dd9;
+    }
+    .order-card {
+      background: #2a2a2a;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 15px;
+      transition: all 0.3s ease;
+      border: 1px solid transparent;
+    }
+    .order-card:hover {
+      transform: translateY(-4px);
+      border-color: #4e9cff;
+      background: #333333;
+    }
+    .order-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.1rem;
+    }
+    .amount {
+      color: #4e9cff;
+      font-weight: bold;
+    }
+    .date {
+      color: #aaa;
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>My Orders</h1>
+
+    <div class="form">
+      <input id="email" type="text" placeholder="Email">
+      <input id="password" type="password" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
+
+    <div id="orders-list">Please log in to view orders.</div>
+  </div>
+
+  <script>
+    let token = "";
+
+    async function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      try {
+        const res = await fetch("/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
+        if (data.token) {
+          token = data.token;
+          fetchOrders();
+        } else {
+          document.getElementById("orders-list").innerHTML = "<p>Login failed.</p>";
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function fetchOrders() {
+      const res = await fetch("/orders", {
+        headers: { Authorization: token }
+      });
+      const orders = await res.json();
+
+      const ordersList = document.getElementById("orders-list");
+      ordersList.innerHTML = "";
+
+      if (!Array.isArray(orders) || orders.length === 0) {
+        ordersList.innerHTML = "<p>No orders found.</p>";
+        return;
+      }
+
+      orders.forEach(order => {
+        const card = document.createElement("div");
+        card.className = "order-card";
+        card.innerHTML = `
+          <div class="order-header">
+            <span>#${order.id}</span>
+            <span class="amount">${order.amount}</span>
+          </div>
+          <p class="date">${order.date}</p>
+        `;
+        ordersList.appendChild(card);
+      });
+    }
+  </script>
+</body>
+</html>
