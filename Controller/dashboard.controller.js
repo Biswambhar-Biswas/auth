@@ -2,6 +2,7 @@
 //verify token
 //we will take all order or reword point, address,
 import jwt from 'jsonwebtoken'
+
 import { userModel } from '../Database/user.models.js'
 import { RequestHistory } from '../Database/request.models.js'
 import dotenv from 'dotenv'
@@ -54,8 +55,13 @@ const userData = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    const userRequestHistory =await RequestHistory.findOne({email:decoded.email})
+        if (!userRequestHistory) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-    res.json({ username: user.username, email: user.email, fullName: user.fullName, memberSince: user.createdAt, coin: user.coin });
+    res.json({ username: user.username, email: user.email, fullName: user.fullName, memberSince: user.createdAt, coin: user.coin, requestHistory : userRequestHistory.orderHistory });
+
 
   } catch (error) {
     console.log("error to send user data", error);
