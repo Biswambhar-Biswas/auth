@@ -997,8 +997,11 @@
       const dateAndTime = document.getElementById('date_time')
       const waste_category = document.getElementById('waste_category')
       const phone = document.getElementById('phone')
-      // const soundEffect = new Audio('../mainApp/dump.mp3')
-      // soundEffect.play()
+      const soundEffect = new Audio('../mainApp/sendSound.mp3')
+      soundEffect.play()
+      if (  location.value==''||dateAndTime.value==''||waste_category.value==''||phone.value=='') {
+       return alert("All Fields are required")
+      }
       const bookingData = {
         location: location.value,
         dateAndTime: dateAndTime.value,

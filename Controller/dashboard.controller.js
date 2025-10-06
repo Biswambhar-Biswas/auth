@@ -22,18 +22,18 @@ const dashboard = (async (req, res) => {
       }
       //recive user booking data
       const { location, dateAndTime, waste_category, phone } = req.body
-      if (location == '' || dateAndTime == '' || waste_category == '' || phone == '') {
-        return console.log("ALL FIELDS ARE REQUIREED");
-
-      }
       console.log(location, dateAndTime, waste_category, phone);
 
-      const user =await RequestHistory.findOne({email : decoded.email})
+      const user = await RequestHistory.findOne({ email: decoded.email })
+      if (user) {
+        const result = await RequestHistory.updateOne(
+          { email: decoded.email },
+          { $push: { orderHistory: `Email:${decoded.email},Date:${dateAndTime},Catagory:${waste_category}` } }
+          //console.log(result);
 
-      const result = await RequestHistory.updateOne(
-        { $push: { orderHistory: `Email:${decoded.email},Date:${dateAndTime},Catagory:${waste_category}` } }
-      );
-      //console.log(result);
+        );
+      }
+
 
     })
 
@@ -55,12 +55,12 @@ const userData = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const userRequestHistory =await RequestHistory.findOne({email:decoded.email})
-        if (!userRequestHistory) {
+    const userRequestHistory = await RequestHistory.findOne({ email: decoded.email })
+    if (!userRequestHistory) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json({ username: user.username, email: user.email, fullName: user.fullName, memberSince: user.createdAt, coin: user.coin, requestHistory : userRequestHistory.orderHistory });
+    res.json({ username: user.username, email: user.email, fullName: user.fullName, memberSince: user.createdAt, coin: user.coin, requestHistory: userRequestHistory.orderHistory });
 
 
   } catch (error) {

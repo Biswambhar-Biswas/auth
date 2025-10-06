@@ -21,13 +21,9 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
     coin:{
-        type:String,
+        type:Number,
         default:0
-    },
-    orderHistory:[
-        
-    ]
-
+    }
 }, { timestamps: true }
 )
 

@@ -2,18 +2,20 @@ import mongoose from "mongoose";
 
 
 const Requestschema = new mongoose.Schema({
-    userEmail:{
-        type:String,
+    email: {
+        type: String,
+        required: [true, "Username is required"],
+        unique: [true, 'already exist'],
     },
-    orderHistory:[
+    orderHistory: [
         {
-            type:String
+            type: String
         }
     ]
 }
 
 )
 
-const RequestHistory = new mongoose.model('Requestschema',Requestschema)
+const RequestHistory = new mongoose.model('Requestschema', Requestschema)
 
-export {RequestHistory}
+export { RequestHistory }

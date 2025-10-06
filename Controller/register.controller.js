@@ -115,7 +115,9 @@ const verifyotp = (async (req, res) => {
             //database a save korlam
             const result = await userModel.create({fullName, username, email, password });
             const requestPeekup = await RequestHistory.create({email});
-            console.log(result);
+            console.log(requestPeekup);
+            
+            // console.log(result);
             
 
 
