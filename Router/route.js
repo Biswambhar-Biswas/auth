@@ -8,15 +8,26 @@ import {serveRegistration} from '../serve HTML file/serve.registration.js'
 import {otpVerify} from '../serve HTML file/serve.otp.js'
 import {mainDashBoard} from '../serve HTML file/serve.mainDashboard.js'
 import { login } from "../serve HTML file/login.serve.js";
-const router = express.Router()
 
+//rider
+import {serveRiderPage} from '../serve HTML file/rider.serve.js'
+import {riderController} from '../Controller/rider.controller.js'
+
+
+const router = express.Router()
+//user section
 router.post('/register',registerUser)
 router.post('/verifyotp',verifyotp)
 router.post('/login',loginUser)
 router.post('/dashboard',dashboard)
 
+//rider section
+router.post('/rider',riderController)
+
+//user section send data(user detailes)
 router.get('/logout',logout)
 router.get('/userData',userData)
+
 
 
 //serve files
@@ -24,6 +35,8 @@ router.get("/",login)
 router.get("/register",serveRegistration)
 router.get("/otpVerify",otpVerify)
 router.get("/",mainDashBoard)
+//rider serve
+router.get('/rider',serveRiderPage)
 
 
 export {router}
