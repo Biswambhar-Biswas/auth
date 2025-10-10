@@ -608,11 +608,12 @@
     // --------- QR Scanner ---------
     let html5QrCode = null;
 
+    const userData = {
+      email: ''
+    }
     async function onScanSuccess(decodedText) {
+      userData.email = decodedText
 
-      const userData = {
-        email: decodedText
-      }
       try {
         const response = await fetch("http://localhost:3000/user/rider", {
           method: "POST",
@@ -628,8 +629,10 @@
         console.log(result);
         html5QrCode.stop()
 
-      $("#result").textContent = "Scanned QR Code: " + decodedText;
-      $("#wasteForm").style.display = "block";
+        $("#result").textContent = `Name: ${result.name} , Username: ${result.username}`;
+        $("#wasteForm").style.display = "block";
+        $("#result").style.color = "#5CE65C";
+        $("#result").style.fontWeight = "bold";
       } catch (error) {
         console.log("error to send qr info" + error);
 
@@ -657,11 +660,34 @@
     }
 
     // Form submission (no backend; demo only)
-    document.addEventListener('click', (e) => {
+    document.addEventListener('click', async (e) => {
       if (e.target && e.target.id === 'submitWaste') {
         const category = $("#wasteCategory").value;
         const amount = parseFloat($("#wasteAmount").value);
         if (!category || isNaN(amount) || amount <= 0) { alert("Please select a category and enter a valid amount."); return; }
+
+        const categoryAndWeight = {
+          email: userData.email,
+          category: category,
+          wasteAmount: amount
+        }
+
+        const response = await fetch("http://localhost:3000/user/wastedata", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(categoryAndWeight)
+        })
+        result = await response.json();
+        if (result.message == "Missing required fields") {
+          alert("Missing required fields")
+        }
+        else if (result.message == "User Not Found") {
+          alert("User Not Found")
+        }
+
+
         alert("Submitted: " + category + " - " + amount + " kg");
         $("#wasteCategory").value = "";
         $("#wasteAmount").value = "";

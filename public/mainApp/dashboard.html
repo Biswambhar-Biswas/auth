@@ -933,7 +933,7 @@
         email.innerText = data.email
         // === Generate QR Code ===
         const qrCanvas = document.getElementById('profileQR');
-        const qrData = `Name: ${data.fullName}\nUsername: ${data.username}\nEmail: ${data.email}`;
+        const qrData = data.email;
         QRCode.toCanvas(qrCanvas, qrData, { width: 200 }, function (error) {
           if (error) console.error(error);
           console.log('QR code generated for profile');

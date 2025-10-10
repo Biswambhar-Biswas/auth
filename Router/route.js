@@ -11,8 +11,8 @@ import { login } from "../serve HTML file/login.serve.js";
 
 //rider
 import {serveRiderPage} from '../serve HTML file/rider.serve.js'
-import {riderController} from '../Controller/rider.controller.js'
-
+import {riderController} from '../Controller/rider.verifyQR_User.controller.js'
+import {wasteDataFromRider} from '../Controller/rider.wasteData.controller.js'
 
 const router = express.Router()
 //user section
@@ -23,6 +23,7 @@ router.post('/dashboard',dashboard)
 
 //rider section
 router.post('/rider',riderController)
+router.post('/wastedata',wasteDataFromRider)
 
 //user section send data(user detailes)
 router.get('/logout',logout)
