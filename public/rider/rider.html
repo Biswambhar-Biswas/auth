@@ -489,10 +489,18 @@
               id="wasteCategory"
               style="width: 100%; padding: 8px; margin-bottom: 8px"
             >
-              <option value="">Select category</option>
-              <option value="plastic">Plastic</option>
+              <option value="">Select a category</option>
               <option value="organic">Organic</option>
+              <option value="plastic">Plastic</option>
+              <option value="paper">Paper</option>
               <option value="metal">Metal</option>
+              <option value="glass">Glass</option>
+              <option value="textiles">Textiles</option>
+              <option value="thermocol">Thermocol</option>
+              <option value="ewaste">eWaste</option>
+              <option value="kitchen_garden_waste">
+                Kitchen & garden waste
+              </option>
             </select>
 
             <label for="wasteAmount">Waste Amount (kg)</label>
@@ -761,26 +769,29 @@
         }
       }
 
-function startScanner() {
-  if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
+      function startScanner() {
+        if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
 
-  Html5Qrcode.getCameras().then((devices) => {
-    if (devices && devices.length) {
-      // Try to find the environment (rear) camera
-      const envCamera = devices.find(d => /back|rear|environment/i.test(d.label)) || devices[0];
+        Html5Qrcode.getCameras()
+          .then((devices) => {
+            if (devices && devices.length) {
+              // Try to find the environment (rear) camera
+              const envCamera =
+                devices.find((d) => /back|rear|environment/i.test(d.label)) ||
+                devices[0];
 
-      html5QrCode
-        .start(
-          envCamera.id,          
-          { fps: 10, qrbox: 250 },
-          onScanSuccess,       
-          (error) => { }
-        )
-        .catch((err) => console.error("Camera start error:", err));
-    }
-  }).catch(err => console.error("Camera get error:", err));
-}
-
+              html5QrCode
+                .start(
+                  envCamera.id,
+                  { fps: 10, qrbox: 250 },
+                  onScanSuccess,
+                  (error) => {}
+                )
+                .catch((err) => console.error("Camera start error:", err));
+            }
+          })
+          .catch((err) => console.error("Camera get error:", err));
+      }
 
       function stopScanner() {
         if (html5QrCode) {

@@ -1,4 +1,5 @@
 // riderController.js
+import { recivedNotification } from '../middleware/reacived.nodemiller.js'
 import { userModel } from '../Database/user.models.js'
 
 const wasteDataFromRider = async (req, res) => {
@@ -14,13 +15,17 @@ const wasteDataFromRider = async (req, res) => {
       return res.status(404).json({ message: "User Not Found" })
     }
 
-    // Define per-kg coin rates
+    //  per-kg coin rates
     const priceChart = {
+      thermocol: 0.5,
+      textiles: 3,
+      organic: 2,
       plastic: 2,
       metal: 3,
       glass: 1.5,
       paper: 1,
-      ewaste: 5
+      ewaste: 5,
+      kitchen_garden_waste: 2
     }
 
     // Normalize category (case-insensitive)
@@ -45,6 +50,12 @@ const wasteDataFromRider = async (req, res) => {
     await user.save()
 
     console.log(`✅ Category: ${category}, Weight: ${weight}kg, Coins: ${coin}, User: ${email}`)
+    //send data to nodemailer to inform users....bony
+    //create korlam 1ta object, object a kore data dend korbo nahole mess hoye jabe
+    const sendUserDataUsingNodemailer = {
+      category, weight, coin, name:await user.fullName,totalCoin:await user.coin
+    }
+    recivedNotification(user.email,sendUserDataUsingNodemailer)
 
     return res.status(200).json({
       message: "Coin calculated successfully",

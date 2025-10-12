@@ -725,10 +725,10 @@
                   <div id="profileUserName"></div>
 
                 </div>
-                
+
                 <div class="row">
                   <div class="tag">Username</div>
-                      <span id="userName" class="chip"></span>
+                  <span id="userName" class="chip"></span>
                 </div>
                 <div class="row">
                   <div class="tag">Email</div>
@@ -788,13 +788,14 @@
                   <option value="">Select a category</option>
                   <option value="organic">Organic</option>
                   <option value="plastic">Plastic</option>
+                  <option value="paper">Paper</option>
                   <option value="metal">Metal</option>
                   <option value="glass">Glass</option>
                   <option value="textiles">Textiles</option>
                   <option value="thermocol">Thermocol</option>
-                  <option value="electronic">Electronic</option>
-                  <option value="kitchen & garden waste">Kitchen & garden waste</option>
-                  <option value="other">Other</option>
+                  <option value="ewaste">eWaste</option>
+                  <option value="kitchen_garden_waste">Kitchen & garden waste</option>
+                  <!-- <option value="other">Other</option> -->
                 </select>
               </div>
 
@@ -1034,13 +1035,6 @@
       waste_category.value = ""
       phone.value = ""
 
-
-      // console.log(bookingData);
-      // if (location.value == "" || dateAndTime.value == "" || waste_category.value == "" || phone.value == "") {
-      //   return alert('All Fields are required')
-
-      // }
-      //else
       try {
         const response = await fetch("http://localhost:3000/user/dashboard", {
           method: "POST",
