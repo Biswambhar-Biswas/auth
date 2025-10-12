@@ -1,568 +1,658 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pickup Boy Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://unpkg.com/html5-qrcode"
+      type="text/javascript"
+    ></script>
+    <style>
+      /* --------- Reset & Base --------- */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pickup Boy Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-  <style>
-    /* --------- Reset & Base --------- */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+      body {
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial,
+          sans-serif;
+        background: linear-gradient(135deg, #ffffff, #f5f7fb);
+        color: #0f172a;
+      }
 
-    body {
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: linear-gradient(135deg, #ffffff, #f5f7fb);
-      color: #0f172a;
-    }
+      button {
+        font: inherit;
+        cursor: pointer;
+      }
 
-    button {
-      font: inherit;
-      cursor: pointer;
-    }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+      /* --------- Variables --------- */
+      :root {
+        --primary: #2563eb;
+        /* Blue 600 */
+        --accent: #7c3aed;
+        /* Purple 600 */
+        --border: #e5e7eb;
+        --muted: #6b7280;
+        --surface: #fff;
+        --card-shadow: 0 1px 2px rgba(16, 24, 40, 0.06),
+          0 1px 3px rgba(16, 24, 40, 0.1);
+        --radius: 10px;
+      }
 
-    /* --------- Variables --------- */
-    :root {
-      --primary: #2563eb;
-      /* Blue 600 */
-      --accent: #7c3aed;
-      /* Purple 600 */
-      --border: #e5e7eb;
-      --muted: #6b7280;
-      --surface: #fff;
-      --card-shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .1);
-      --radius: 10px;
-    }
+      /* --------- Container --------- */
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 24px;
+      }
 
-    /* --------- Container --------- */
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 24px;
-    }
-
-    /* --------- Topbar --------- */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: rgba(255, 255, 255, .9);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .topbar .inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 56px;
-      position: relative;
-      gap: 16px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .brand-badge {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      display: grid;
-      place-items: center;
-      color: #fff;
-      background: linear-gradient(135deg, var(--primary), var(--accent));
-    }
-
-    .brand-title .t1 {
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .brand-title .t2 {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .pill {
-      background: #f3f4f6;
-      color: #111827;
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 12px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .pill::before {
-      content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent);
-    }
-
-    /* --------- Hamburger --------- */
-    .hamburger {
-      width: 40px;
-      height: 36px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: #fff;
-      display: inline-grid;
-      place-items: center;
-      gap: 4px;
-      padding: 6px;
-    }
-
-    .hamburger span {
-      display: block;
-      width: 18px;
-      height: 2px;
-      background: #0f172a;
-    }
-
-    /* --------- Dropdown --------- */
-    .dropdown {
-      position: absolute;
-      top: 56px;
-      left: 0;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      box-shadow: var(--card-shadow);
-      display: none;
-      min-width: 180px;
-      z-index: 30;
-    }
-
-    .dropdown.show {
-      display: block;
-    }
-
-    .menu-item {
-      display: block;
-      width: 100%;
-      padding: 10px 12px;
-      background: transparent;
-      border: none;
-      text-align: left;
-      cursor: pointer;
-      border-radius: 8px;
-      color: #334155;
-    }
-
-    .menu-item:hover {
-      background: #f3f4f6;
-    }
-
-    /* --------- Layout --------- */
-    main {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      padding-top: 18px;
-    }
-
-    .kpis {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-    }
-
-    .kpi {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: var(--card-shadow);
-    }
-
-    .kpi .label {
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .kpi .value {
-      margin-top: 6px;
-      font-weight: 700;
-    }
-
-    /* --------- Sections --------- */
-    .section {
-      display: none;
-      margin-top: 16px;
-    }
-
-    .section.active {
-      display: block;
-    }
-
-    /* --------- QR Scanner --------- */
-    #reader {
-      width: 100%;
-      max-width: 400px;
-      margin: 12px 0;
-    }
-
-    #result {
-      margin-top: 8px;
-      color: var(--muted);
-    }
-
-    #pickup .qr-container {
-      max-width: 480px;
-      margin: 20px auto;
-      padding: 20px;
-      background: var(--surface);
-      border-radius: 12px;
-      box-shadow: var(--card-shadow);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-
-    #pickup #reader {
-      width: 100%;
-      border-radius: 12px;
-      overflow: hidden;
-    }
-
-    #pickup #result {
-      font-size: 14px;
-      color: #334155;
-      text-align: center;
-      word-break: break-word;
-    }
-
-    /* --------- Map --------- */
-    .map {
-      height: 360px;
-      border: 1px dashed var(--border);
-      border-radius: 12px;
-      background: linear-gradient(45deg, rgba(99, 102, 241, .12), transparent), linear-gradient(-45deg, rgba(59, 130, 246, .12), transparent);
-    }
-
-    .note {
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    /* --------- Profile Form --------- */
-    .form {
-      display: grid;
-      gap: 12px;
-    }
-
-    .form .field {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form .field label {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-
-    .form .field input,
-    .form .field select {
-      height: 40px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 0 12px;
-      background: #fff;
-    }
-
-    /* --------- Cards --------- */
-    .cards {
-      display: grid;
-      gap: 16px;
-    }
-
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      box-shadow: var(--card-shadow);
-      overflow: hidden;
-    }
-
-    .card .head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px;
-    }
-
-    .card .title {
-      font-weight: 700;
-    }
-
-    .badge {
-      font-size: 12px;
-      border-radius: 999px;
-      padding: 4px 10px;
-      color: #fff;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .badge.pending {
-      background: #f59e0b;
-    }
-
-    .badge.picked {
-      background: var(--primary);
-    }
-
-    .badge.done {
-      background: #059669;
-    }
-
-    .card .body {
-      padding: 0 16px 16px;
-    }
-
-    .meta {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 12px;
-    }
-
-    .btn {
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      height: 36px;
-      padding: 0 14px;
-      background: #fff;
-    }
-
-    .btn.primary {
-      background: var(--primary);
-      color: #fff;
-      border-color: transparent;
-    }
-
-    /* --------- Availability Switch --------- */
-    .avail {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .switch {
-      position: relative;
-      width: 44px;
-      height: 24px;
-      background: #e5e7eb;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      cursor: pointer;
-    }
-
-    .switch .knob {
-      position: absolute;
-      top: 1px;
-      left: 1px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: #fff;
-      transition: 0.15s;
-    }
-
-    .switch.on {
-      background: var(--primary);
-    }
-
-    .switch.on .knob {
-      transform: translateX(20px);
-    }
-
-    /* --------- Responsive --------- */
-    @media (max-width: 768px) {
-      .kpis {
-        grid-template-columns: 1fr;
+      /* --------- Topbar --------- */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
       }
 
       .topbar .inner {
-        padding-left: 4px;
-        padding-right: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+        position: relative;
+        gap: 16px;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <header class="topbar">
-    <div class="container inner">
-      <button id="menuBtn" class="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
-      <div id="menu" class="dropdown" role="menu" aria-labelledby="menuBtn">
-        <button class="menu-item" data-key="pickup">Pickup</button>
-        <button class="menu-item" data-key="map">Map / Route</button>
-        <button class="menu-item" data-key="profile">Profile</button>
-        <button class="menu-item" data-key="tasks">Tasks</button>
-        <button class="menu-item" data-key="availability">Availability</button>
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .brand-badge {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        background: linear-gradient(135deg, var(--primary), var(--accent));
+      }
+
+      .brand-title .t1 {
+        font-weight: 700;
+        font-size: 14px;
+      }
+
+      .brand-title .t2 {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .pill {
+        background: #f3f4f6;
+        color: #111827;
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 12px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .pill::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      /* --------- Hamburger --------- */
+      .hamburger {
+        width: 40px;
+        height: 36px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #fff;
+        display: inline-grid;
+        place-items: center;
+        gap: 4px;
+        padding: 6px;
+      }
+
+      .hamburger span {
+        display: block;
+        width: 18px;
+        height: 2px;
+        background: #0f172a;
+      }
+
+      /* --------- Dropdown --------- */
+      .dropdown {
+        position: absolute;
+        top: 56px;
+        left: 0;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        display: none;
+        min-width: 180px;
+        z-index: 30;
+      }
+
+      .dropdown.show {
+        display: block;
+      }
+
+      .menu-item {
+        display: block;
+        width: 100%;
+        padding: 10px 12px;
+        background: transparent;
+        border: none;
+        text-align: left;
+        cursor: pointer;
+        border-radius: 8px;
+        color: #334155;
+      }
+
+      .menu-item:hover {
+        background: #f3f4f6;
+      }
+
+      /* --------- Layout --------- */
+      main {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding-top: 18px;
+      }
+
+      .kpis {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .kpi {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        box-shadow: var(--card-shadow);
+      }
+
+      .kpi .label {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .kpi .value {
+        margin-top: 6px;
+        font-weight: 700;
+      }
+
+      /* --------- Sections --------- */
+      .section {
+        display: none;
+        margin-top: 16px;
+      }
+
+      .section.active {
+        display: block;
+      }
+
+      /* --------- QR Scanner --------- */
+      #reader {
+        width: 100%;
+        max-width: 400px;
+        margin: 12px 0;
+      }
+
+      #result {
+        margin-top: 8px;
+        color: var(--muted);
+      }
+
+      #pickup .qr-container {
+        max-width: 480px;
+        margin: 20px auto;
+        padding: 20px;
+        background: var(--surface);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+
+      #pickup #reader {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      #pickup #result {
+        font-size: 14px;
+        color: #334155;
+        text-align: center;
+        word-break: break-word;
+      }
+
+      /* --------- Map --------- */
+      .map {
+        height: 360px;
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        background: linear-gradient(
+            45deg,
+            rgba(99, 102, 241, 0.12),
+            transparent
+          ),
+          linear-gradient(-45deg, rgba(59, 130, 246, 0.12), transparent);
+      }
+
+      .note {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      /* --------- Profile Form --------- */
+      .form {
+        display: grid;
+        gap: 12px;
+      }
+
+      .form .field {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form .field label {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      .form .field input,
+      .form .field select {
+        height: 40px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 0 12px;
+        background: #fff;
+      }
+
+      /* --------- Cards --------- */
+      .cards {
+        display: grid;
+        gap: 16px;
+      }
+
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--card-shadow);
+        overflow: hidden;
+      }
+
+      .card .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+      }
+
+      .card .title {
+        font-weight: 700;
+      }
+
+      .badge {
+        font-size: 12px;
+        border-radius: 999px;
+        padding: 4px 10px;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .badge.pending {
+        background: #f59e0b;
+      }
+
+      .badge.picked {
+        background: var(--primary);
+      }
+
+      .badge.done {
+        background: #059669;
+      }
+
+      .card .body {
+        padding: 0 16px 16px;
+      }
+
+      .meta {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .btn {
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        height: 36px;
+        padding: 0 14px;
+        background: #fff;
+      }
+
+      .btn.primary {
+        background: var(--primary);
+        color: #fff;
+        border-color: transparent;
+      }
+
+      /* --------- Availability Switch --------- */
+      .avail {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .switch {
+        position: relative;
+        width: 44px;
+        height: 24px;
+        background: #e5e7eb;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        cursor: pointer;
+      }
+
+      .switch .knob {
+        position: absolute;
+        top: 1px;
+        left: 1px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        transition: 0.15s;
+      }
+
+      .switch.on {
+        background: var(--primary);
+      }
+
+      .switch.on .knob {
+        transform: translateX(20px);
+      }
+
+      /* --------- Responsive --------- */
+      @media (max-width: 768px) {
+        .kpis {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar .inner {
+          padding-left: 4px;
+          padding-right: 4px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="topbar">
+      <div class="container inner">
+        <button id="menuBtn" class="hamburger" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+        <div id="menu" class="dropdown" role="menu" aria-labelledby="menuBtn">
+          <button class="menu-item" data-key="pickup">Pickup</button>
+          <button class="menu-item" data-key="map">Map / Route</button>
+          <button class="menu-item" data-key="profile">Profile</button>
+          <button class="menu-item" data-key="tasks">Tasks</button>
+          <button class="menu-item" data-key="availability">
+            Availability
+          </button>
+        </div>
+        <a class="brand" href="#">
+          <span class="brand-badge" aria-hidden>📦</span>
+          <span class="brand-title"
+            ><span class="t1">Pickup Boy</span><br /><span class="t2"
+              >Delivery dashboard</span
+            ></span
+          >
+        </a>
+        <span class="pill">Modern • Fast</span>
       </div>
-      <a class="brand" href="#">
-        <span class="brand-badge" aria-hidden>📦</span>
-        <span class="brand-title"><span class="t1">Pickup Boy</span><br><span class="t2">Delivery
-            dashboard</span></span>
-      </a>
-      <span class="pill">Modern • Fast</span>
-    </div>
-  </header>
+    </header>
 
-  <main class="container">
-    <div class="kpis">
-      <div class="kpi">
-        <div class="label">Status</div>
-        <div id="statusValue" class="value">On duty</div>
-      </div>
-      <div class="kpi">
-        <div class="label">Today’s stops</div>
-        <div class="value">12</div>
-      </div>
-      <div class="kpi">
-        <div class="label">Completed</div>
-        <div class="value">3</div>
-      </div>
-    </div>
-
-    <section id="pickup" class="section active">
-      <h2 style="text-align:center; margin-bottom:16px;">QR Code Scanner</h2>
-      <div class="qr-container">
-        <div id="reader"></div>
-        <div id="result">Scan a QR code to see the result here.</div>
-
-        <div id="wasteForm" style="display:none; width:100%; margin-top:12px;">
-          <label for="wasteCategory">Waste Category</label>
-          <select id="wasteCategory" style="width:100%; padding:8px; margin-bottom:8px;">
-            <option value="">Select category</option>
-            <option value="plastic">Plastic</option>
-            <option value="organic">Organic</option>
-            <option value="metal">Metal</option>
-          </select>
-
-          <label for="wasteAmount">Waste Amount (kg)</label>
-          <input id="wasteAmount" type="number" min="0" placeholder="Enter amount"
-            style="width:100%; padding:8px; margin-bottom:8px;">
-
-          <button id="submitWaste"
-            style="padding:10px 16px; background:var(--primary); color:#fff; border:none; border-radius:8px;">Submit</button>
+    <main class="container">
+      <div class="kpis">
+        <div class="kpi">
+          <div class="label">Status</div>
+          <div id="statusValue" class="value">On duty</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Today’s stops</div>
+          <div class="value">12</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Completed</div>
+          <div class="value">3</div>
         </div>
       </div>
-    </section>
 
-    <section id="map" class="section">
-      <h2>Map & Route</h2>
-      <div class="map"></div>
-      <p class="note">Map preview (connect to real maps API)</p>
-    </section>
+      <section id="pickup" class="section active">
+        <h2 style="text-align: center; margin-bottom: 16px">QR Code Scanner</h2>
+        <div class="qr-container">
+          <div id="reader"></div>
+          <div id="result">Scan a QR code to see the result here.</div>
 
-    <section id="profile" class="section">
-      <h2>Edit Profile</h2>
-      <div class="form">
-        <div class="field"><label for="pf-name">Full Name</label><input id="pf-name" placeholder="Your name"></div>
-        <div class="field"><label for="pf-phone">Phone</label><input id="pf-phone" placeholder="Mobile number"></div>
-        <div class="field"><label for="pf-vehicle">Vehicle</label><input id="pf-vehicle"
-            placeholder="Bike / Scooty / Car"></div>
-        <div class="field"><label for="pf-plate">Number Plate</label><input id="pf-plate" placeholder="WB 06 AB 1234">
-        </div>
-      </div>
-    </section>
+          <div
+            id="wasteForm"
+            style="display: none; width: 100%; margin-top: 12px"
+          >
+            <label for="wasteCategory">Waste Category</label>
+            <select
+              id="wasteCategory"
+              style="width: 100%; padding: 8px; margin-bottom: 8px"
+            >
+              <option value="">Select category</option>
+              <option value="plastic">Plastic</option>
+              <option value="organic">Organic</option>
+              <option value="metal">Metal</option>
+            </select>
 
-    <section id="tasks" class="section">
-      <h2>Tasks</h2>
-      <div id="cards" class="cards"></div>
-    </section>
+            <label for="wasteAmount">Waste Amount (kg)</label>
+            <input
+              id="wasteAmount"
+              type="number"
+              min="0"
+              placeholder="Enter amount"
+              style="width: 100%; padding: 8px; margin-bottom: 8px"
+            />
 
-    <section id="availability" class="section">
-      <h2>Availability</h2>
-      <div class="card" style="padding:16px">
-        <div class="avail">
-          <div>
-            <div style="font-weight:600">Availability</div>
-            <div class="note">Mark yourself unavailable if off-duty</div>
+            <button
+              id="submitWaste"
+              style="
+                padding: 10px 16px;
+                background: var(--primary);
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+              "
+            >
+              Submit
+            </button>
           </div>
-          <div style="display:flex;align-items:center;gap:10px">
-            <span id="availBadge" class="badge picked">Available</span>
-            <div class="switch" role="switch" aria-checked="true" tabindex="0">
-              <div class="knob"></div>
+        </div>
+      </section>
+
+      <section id="map" class="section">
+        <h2>Map & Route</h2>
+        <div class="map"></div>
+        <p class="note">Map preview (connect to real maps API)</p>
+      </section>
+
+      <section id="profile" class="section">
+        <h2>Edit Profile</h2>
+        <div class="form">
+          <div class="field">
+            <label for="pf-name">Full Name</label
+            ><input id="pf-name" placeholder="Your name" />
+          </div>
+          <div class="field">
+            <label for="pf-phone">Phone</label
+            ><input id="pf-phone" placeholder="Mobile number" />
+          </div>
+          <div class="field">
+            <label for="pf-vehicle">Vehicle</label
+            ><input id="pf-vehicle" placeholder="Bike / Scooty / Car" />
+          </div>
+          <div class="field">
+            <label for="pf-plate">Number Plate</label
+            ><input id="pf-plate" placeholder="WB 06 AB 1234" />
+          </div>
+        </div>
+      </section>
+
+      <section id="tasks" class="section">
+        <h2>Tasks</h2>
+        <div id="cards" class="cards"></div>
+      </section>
+
+      <section id="availability" class="section">
+        <h2>Availability</h2>
+        <div class="card" style="padding: 16px">
+          <div class="avail">
+            <div>
+              <div style="font-weight: 600">Availability</div>
+              <div class="note">Mark yourself unavailable if off-duty</div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px">
+              <span id="availBadge" class="badge picked">Available</span>
+              <div
+                class="switch"
+                role="switch"
+                aria-checked="true"
+                tabindex="0"
+              >
+                <div class="knob"></div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
-  </main>
+      </section>
+    </main>
 
-  <script>
-    const $ = (s, r = document) => r.querySelector(s);
-    const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+    <script>
+      const $ = (s, r = document) => r.querySelector(s);
+      const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-    const tabs = ["pickup", "map", "profile", "tasks", "availability"];
-    const state = { tab: localStorage.getItem("tab") || "pickup", available: JSON.parse(localStorage.getItem("pickup_available") || "true") };
+      const tabs = ["pickup", "map", "profile", "tasks", "availability"];
+      const state = {
+        tab: localStorage.getItem("tab") || "pickup",
+        available: JSON.parse(
+          localStorage.getItem("pickup_available") || "true"
+        ),
+      };
 
-    function setTab(key) {
-      state.tab = key;
-      localStorage.setItem("tab", key);
-      $$(".section").forEach(s => s.classList.toggle("active", s.id === key));
-      if (key === "pickup") startScanner();
-      else stopScanner();
-    }
+      function setTab(key) {
+        state.tab = key;
+        localStorage.setItem("tab", key);
+        $$(".section").forEach((s) =>
+          s.classList.toggle("active", s.id === key)
+        );
+        if (key === "pickup") startScanner();
+        else stopScanner();
+      }
 
-    function setAvail(val) {
-      state.available = val;
-      localStorage.setItem("pickup_available", JSON.stringify(val));
-      $(".switch").classList.toggle("on", val);
-      $(".switch").setAttribute("aria-checked", String(val));
-      $("#statusValue").textContent = val ? "On duty" : "Off duty";
-      $("#availBadge").textContent = val ? "Available" : "Unavailable";
-      $("#availBadge").className = `badge ${val ? 'picked' : 'pending'}`;
-    }
+      function setAvail(val) {
+        state.available = val;
+        localStorage.setItem("pickup_available", JSON.stringify(val));
+        $(".switch").classList.toggle("on", val);
+        $(".switch").setAttribute("aria-checked", String(val));
+        $("#statusValue").textContent = val ? "On duty" : "Off duty";
+        $("#availBadge").textContent = val ? "Available" : "Unavailable";
+        $("#availBadge").className = `badge ${val ? "picked" : "pending"}`;
+      }
 
-    // Sample tasks
-    let tasks = [
-      { id: "A-1021", customer: "Anita Sharma", phone: "+91 98765 43210", address: "12 Park Street", eta: "12:30", status: "pending" },
-      { id: "A-1022", customer: "Rahul Verma", phone: "+91 99887 76655", address: "44 Lake View", eta: "12:45", status: "picked" },
-      { id: "A-1023", customer: "Sneha Patel", phone: "+91 98111 22334", address: "Sunrise Apartments", eta: "13:05", status: "pending" }
-    ];
+      // Sample tasks
+      let tasks = [
+        {
+          id: "A-1021",
+          customer: "Anita Sharma",
+          phone: "+91 98765 43210",
+          address: "12 Park Street",
+          eta: "12:30",
+          status: "pending",
+        },
+        {
+          id: "A-1022",
+          customer: "Rahul Verma",
+          phone: "+91 99887 76655",
+          address: "44 Lake View",
+          eta: "12:45",
+          status: "picked",
+        },
+        {
+          id: "A-1023",
+          customer: "Sneha Patel",
+          phone: "+91 98111 22334",
+          address: "Sunrise Apartments",
+          eta: "13:05",
+          status: "pending",
+        },
+      ];
 
-    function renderTasks() {
-      const grid = $("#cards"); grid.innerHTML = "";
-      tasks.forEach(t => {
-        const el = document.createElement("article");
-        el.className = "card";
-        el.innerHTML = `
+      function renderTasks() {
+        const grid = $("#cards");
+        grid.innerHTML = "";
+        tasks.forEach((t) => {
+          const el = document.createElement("article");
+          el.className = "card";
+          el.innerHTML = `
             <div class="head">
               <div class="title">#${t.id}</div>
-              <span class="badge ${t.status === "pending" ? "pending" : t.status === "picked" ? "picked" : "done"}">${t.status}</span>
+              <span class="badge ${
+                t.status === "pending"
+                  ? "pending"
+                  : t.status === "picked"
+                  ? "picked"
+                  : "done"
+              }">${t.status}</span>
             </div>
             <div class="body">
               <div class="meta">
@@ -572,129 +662,168 @@
                 <div class="note">ETA ${t.eta}</div>
               </div>
               <div class="actions">
-                ${t.status === "pending" ? '<button class="btn primary" data-action="start">Start</button>' : ""}
-                ${t.status !== "delivered" ? '<button class="btn" data-action="done">Done</button>' : ""}
+                ${
+                  t.status === "pending"
+                    ? '<button class="btn primary" data-action="start">Start</button>'
+                    : ""
+                }
+                ${
+                  t.status !== "delivered"
+                    ? '<button class="btn" data-action="done">Done</button>'
+                    : ""
+                }
               </div>
             </div>`;
-        el.addEventListener("click", e => {
-          const a = e.target.closest("button"); if (!a) return;
-          if (a.dataset.action === "start") t.status = "picked";
-          if (a.dataset.action === "done") t.status = "delivered";
-          renderTasks();
+          el.addEventListener("click", (e) => {
+            const a = e.target.closest("button");
+            if (!a) return;
+            if (a.dataset.action === "start") t.status = "picked";
+            if (a.dataset.action === "done") t.status = "delivered";
+            renderTasks();
+          });
+          grid.appendChild(el);
         });
-        grid.appendChild(el);
+      }
+
+      // Init UI
+      function init() {
+        setTab(state.tab);
+        setAvail(state.available);
+        $(".switch").addEventListener("click", () =>
+          setAvail(!state.available)
+        );
+        $(".switch").addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setAvail(!state.available);
+          }
+        });
+        renderTasks();
+
+        // Hamburger
+        const menuBtn = $("#menuBtn"),
+          menu = $("#menu");
+        const toggle = (open) => {
+          menu.classList.toggle("show", open);
+        };
+        menuBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggle(!menu.classList.contains("show"));
+        });
+        document.addEventListener("click", () => {
+          toggle(false);
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") toggle(false);
+        });
+        $$(".menu-item").forEach((i) =>
+          i.addEventListener("click", () => {
+            setTab(i.dataset.key);
+            toggle(false);
+          })
+        );
+      }
+
+      document.addEventListener("DOMContentLoaded", init);
+
+      // --------- QR Scanner ---------
+      let html5QrCode = null;
+
+      const userData = {
+        email: "",
+      };
+      async function onScanSuccess(decodedText) {
+        userData.email = decodedText;
+
+        try {
+          const response = await fetch("http://192.168.29.40:3000/user/rider", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+          });
+          result = await response.json();
+          if (result.message == "User Not Found") {
+            alert(result.message);
+          }
+          console.log(result);
+          html5QrCode.stop();
+
+          $(
+            "#result"
+          ).textContent = `Name: ${result.name} , Username: ${result.username}`;
+          $("#wasteForm").style.display = "block";
+          $("#result").style.color = "#5CE65C";
+          $("#result").style.fontWeight = "bold";
+        } catch (error) {
+          console.log("error to send qr info" + error);
+        }
+      }
+
+function startScanner() {
+  if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
+
+  Html5Qrcode.getCameras().then((devices) => {
+    if (devices && devices.length) {
+      // Try to find the environment (rear) camera
+      const envCamera = devices.find(d => /back|rear|environment/i.test(d.label)) || devices[0];
+
+      html5QrCode
+        .start(
+          envCamera.id,          
+          { fps: 10, qrbox: 250 },
+          onScanSuccess,       
+          (error) => { }
+        )
+        .catch((err) => console.error("Camera start error:", err));
+    }
+  }).catch(err => console.error("Camera get error:", err));
+}
+
+
+      function stopScanner() {
+        if (html5QrCode) {
+          html5QrCode.stop().catch((err) => console.log(err));
+        }
+      }
+
+      // Form submission (no backend; demo only)
+      document.addEventListener("click", async (e) => {
+        if (e.target && e.target.id === "submitWaste") {
+          const category = $("#wasteCategory").value;
+          const amount = parseFloat($("#wasteAmount").value);
+          if (!category || isNaN(amount) || amount <= 0) {
+            alert("Please select a category and enter a valid amount.");
+            return;
+          }
+
+          const categoryAndWeight = {
+            email: userData.email,
+            category: category,
+            wasteAmount: amount,
+          };
+
+          const response = await fetch("http://192.168.29.40:3000/user/wastedata", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(categoryAndWeight),
+          });
+          result = await response.json();
+          if (result.message == "Missing required fields") {
+            alert("Missing required fields");
+          } else if (result.message == "User Not Found") {
+            alert("User Not Found");
+          }
+
+          alert("Submitted: " + category + " - " + amount + " kg");
+          $("#wasteCategory").value = "";
+          $("#wasteAmount").value = "";
+          $("#wasteForm").style.display = "none";
+        }
       });
-    }
-
-    // Init UI
-    function init() {
-      setTab(state.tab);
-      setAvail(state.available);
-      $(".switch").addEventListener("click", () => setAvail(!state.available));
-      $(".switch").addEventListener("keydown", (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setAvail(!state.available); } });
-      renderTasks();
-
-      // Hamburger
-      const menuBtn = $("#menuBtn"), menu = $("#menu");
-      const toggle = open => { menu.classList.toggle("show", open); };
-      menuBtn.addEventListener("click", e => { e.stopPropagation(); toggle(!menu.classList.contains("show")); });
-      document.addEventListener("click", () => { toggle(false); });
-      document.addEventListener("keydown", e => { if (e.key === "Escape") toggle(false); });
-      $$(".menu-item").forEach(i => i.addEventListener("click", () => { setTab(i.dataset.key); toggle(false); }));
-    }
-
-    document.addEventListener("DOMContentLoaded", init);
-
-    // --------- QR Scanner ---------
-    let html5QrCode = null;
-
-    const userData = {
-      email: ''
-    }
-    async function onScanSuccess(decodedText) {
-      userData.email = decodedText
-
-      try {
-        const response = await fetch("http://localhost:3000/user/rider", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(userData)
-        })
-        result = await response.json();
-        if (result.message == "User Not Found") {
-          alert(result.message)
-        }
-        console.log(result);
-        html5QrCode.stop()
-
-        $("#result").textContent = `Name: ${result.name} , Username: ${result.username}`;
-        $("#wasteForm").style.display = "block";
-        $("#result").style.color = "#5CE65C";
-        $("#result").style.fontWeight = "bold";
-      } catch (error) {
-        console.log("error to send qr info" + error);
-
-      }
-    }
-
-    function startScanner() {
-      if (!html5QrCode) html5QrCode = new Html5Qrcode("reader");
-      Html5Qrcode.getCameras().then(devices => {
-        if (devices && devices.length) {
-          html5QrCode.start(
-            devices[0].id,
-            { fps: 10, qrbox: 250 },
-            onScanSuccess,
-            (error) => { /* ignore scanning errors */ }
-          ).catch(err => console.log(err));
-        }
-      });
-    }
-
-    function stopScanner() {
-      if (html5QrCode) {
-        html5QrCode.stop().catch(err => console.log(err));
-      }
-    }
-
-    // Form submission (no backend; demo only)
-    document.addEventListener('click', async (e) => {
-      if (e.target && e.target.id === 'submitWaste') {
-        const category = $("#wasteCategory").value;
-        const amount = parseFloat($("#wasteAmount").value);
-        if (!category || isNaN(amount) || amount <= 0) { alert("Please select a category and enter a valid amount."); return; }
-
-        const categoryAndWeight = {
-          email: userData.email,
-          category: category,
-          wasteAmount: amount
-        }
-
-        const response = await fetch("http://localhost:3000/user/wastedata", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(categoryAndWeight)
-        })
-        result = await response.json();
-        if (result.message == "Missing required fields") {
-          alert("Missing required fields")
-        }
-        else if (result.message == "User Not Found") {
-          alert("User Not Found")
-        }
-
-
-        alert("Submitted: " + category + " - " + amount + " kg");
-        $("#wasteCategory").value = "";
-        $("#wasteAmount").value = "";
-        $("#wasteForm").style.display = "none";
-      }
-    });
-  </script>
-</body>
-
+    </script>
+  </body>
 </html>
