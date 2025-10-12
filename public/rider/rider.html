@@ -736,7 +736,7 @@
         userData.email = decodedText;
 
         try {
-          const response = await fetch("http://192.168.29.40:3000/user/rider", {
+          const response = await fetch("http://localhost:3000/user/rider", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -804,7 +804,7 @@ function startScanner() {
             wasteAmount: amount,
           };
 
-          const response = await fetch("http://192.168.29.40:3000/user/wastedata", {
+          const response = await fetch("http://localhost:3000/user/wastedata", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
