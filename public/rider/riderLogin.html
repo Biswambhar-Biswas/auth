@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rideo Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<style>
+/* Custom Properties for easy color changes */
+:root {
+    --primary-green: #38a169; /* The main, active green color */
+    --light-green-bg: #e6ffe6; /* Very light background color */
+    --dark-green-bg: #4caf50; /* Base color for the map background */
+    --card-bg: #ffffff;
+    --text-light: #ffffff;
+    --text-dark: #333333;
+    --text-link: #666666;
+}
+
+/* Global Reset and Body Styling */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif; /* Use a clean, modern sans-serif font */
+}
+
+body {
+    background-color: var(--light-green-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* -------------------
+   Main Container Styling
+   ------------------- */
+.login-container {
+    width: 375px; /* Common mobile width for demonstration */
+    min-height: 667px; /* Common mobile height for demonstration */
+    /* background-color: var(--dark-green-bg); */
+    background-image: url(/rider/loginPageImage.png) ;
+    border-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    position: relative; /* For the subtle map pattern */
+}
+
+/* Subtle Map Background Pattern (CSS-only approximation) */
+.login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #4caf4fe6;
+    /* Simplified geometric pattern to mimic the map lines */
+    /* background-image: repeating-linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.1) 5px,
+        transparent 5px,
+        transparent 15px
+    ); */
+    opacity: 0.8;
+    z-index: 1;
+}
+
+/* -------------------
+   Logo Section
+   ------------------- */
+.logo-section {
+    position: relative;
+    z-index: 2;
+    padding: 50px 20px 20px;
+    text-align: center;
+}
+
+.logo-section h1 {
+    font-size: 4rem;
+    color: var(--text-light);
+    font-weight: 700;
+    text-transform: lowercase;
+    letter-spacing: -2px;
+}
+
+/* -------------------
+   Login Card
+   ------------------- */
+.login-card {
+    position: relative;
+    z-index: 2;
+    background-color: var(--card-bg);
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    padding: 30px 25px;
+    margin-top: auto; /* Pushes the card to the bottom */
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* -------------------
+   Input Groups
+   ------------------- */
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0 15px;
+    margin-bottom: 15px;
+    background-color: #f7f7f7; /* Light grey background for input */
+    height: 50px;
+}
+
+.input-group i {
+    color: #999;
+    font-size: 1.1rem;
+    margin-right: 15px;
+}
+
+.input-group input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: 10px 0;
+    background-color: transparent;
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+
+/* -------------------
+   Buttons
+   ------------------- */
+.btn {
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-mobile-login {
+    background-color: var(--primary-green);
+    color: var(--text-light);
+    margin-bottom: 25px;
+}
+
+.btn-mobile-login i {
+    margin-right: 10px;
+}
+
+.btn-login {
+    background-color: var(--primary-green);
+    color: var(--text-light);
+    margin-top: 10px; /* Space after the password input */
+}
+
+.btn:hover {
+    background-color: #308f5c; /* Slightly darker green on hover */
+}
+
+/* -------------------
+   Separator and Link
+   ------------------- */
+.or-separator {
+    text-align: center;
+    color: #aaa;
+    margin: 15px 0 25px;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.or-separator::before,
+.or-separator::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: #eee;
+}
+
+.or-separator::before {
+    left: 0;
+}
+
+.or-separator::after {
+    right: 0;
+}
+
+.forgot-password {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: var(--text-link);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+</style>
+<body>
+    <div class="login-container">
+        <header class="logo-section">
+            <h1>rideo</h1>
+        </header>
+
+        <main class="login-card">
+  
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" placeholder="Email address" required>
+                </div>
+
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" placeholder="Password" required>
+                </div>
+
+                <button type="submit" class="btn btn-login">Login</button>
+            </form>
+
+            <a href="#" class="forgot-password">Forgot your password?</a>
+        </main>
+    </div>
+
+</body>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Stop the form from traditional submission
+
+            // In a real application, you would send data to a server here.
+            
+            const email = loginForm.querySelector('input[type="email"]').value;
+            const password = loginForm.querySelector('input[type="password"]').value;
+
+            console.log('Login Attempt:', { email, password });
+            
+            // Simple visual feedback
+            alert(`Attempting to log in with Email: ${email}`);
+
+            // You would typically clear the form or redirect the user on success
+            // loginForm.reset(); 
+        });
+    }
+});
+</script>
+</html>
